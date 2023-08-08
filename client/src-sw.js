@@ -4,6 +4,7 @@ const { registerRoute } = require('workbox-routing');
 const { CacheableResponsePlugin } = require('workbox-cacheable-response');
 const { ExpirationPlugin } = require('workbox-expiration');
 const { precacheAndRoute } = require('workbox-precaching/precacheAndRoute');
+const { StaleWhileRevalidate } = require('workbox-strategies');
 
 precacheAndRoute(self.__WB_MANIFEST);
 
@@ -24,7 +25,7 @@ warmStrategyCache({
   strategy: pageCache,
 });
 
-registerRoute(({ request }) => request.mode === 'navigate', pageCache);
+// registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
 
 // Set up asset cache
@@ -43,28 +44,6 @@ registerRoute(
   })
 );
 
-// TODO: Implement asset caching
-
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', function() {
-//     navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
-//       // Registration was successful
-//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//     }, function(err) {
-//       // registration failed 
-//       console.log('ServiceWorker registration failed: ', err);
-//     });
-//   });
-// }
-
-
-
-this.addEventListener('fetch', function (event) {
- 
-});
-self.addEventListener('fetch', (e) =>
-  e.respondWith(caches.match(e.request).then((res) => res || fetch(e.request)))
-);
-
 
 registerRoute();
+
